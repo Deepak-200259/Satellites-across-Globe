@@ -16,8 +16,7 @@ import "./style.css";
 
 	const renderer = new WebGLRenderer();
 	const controls = new OrbitControls(camera, renderer.domElement);
-	const seedScene = new SeedScene();
-	seedScene.add(camera);
+	const seedScene = new SeedScene(camera);
 	const stats = new Stats();
 	stats.showPanel(0);
 	document.body.appendChild(stats.dom);

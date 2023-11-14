@@ -1,4 +1,4 @@
-import { Group } from "three";
+import { Group, PerspectiveCamera } from "three";
 import Earth from "./components/earth";
 import Satellite from "./components/satellite";
 import Startfield from "./components/starfield";
@@ -6,14 +6,17 @@ import Startfield from "./components/starfield";
 export default class SeedScene extends Group {
 	private earth = new Earth();
 	private starfield = new Startfield();
-	private satellites = new Satellite();
+	private satellites: Satellite | null = null;
 
-	constructor() {
+	constructor(sceneCamera: PerspectiveCamera) {
 		super();
-		this.add(this.earth, this.starfield, this.satellites);
+		let camera = sceneCamera;
+		this.satellites = new Satellite(camera);
+		this.add(this.earth, this.starfield, this.satellites, camera);
+		console.log(this);
 	}
 
 	update() {
-		this.satellites.update();
+		if (this.satellites) this.satellites.update();
 	}
 }

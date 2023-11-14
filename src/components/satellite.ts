@@ -1,7 +1,9 @@
 import { twoline2satrec } from "satellite.js";
 import {
+	Camera,
 	Mesh,
 	MeshBasicMaterial,
+	PerspectiveCamera,
 	Raycaster,
 	SphereGeometry,
 	Vector2,
@@ -20,9 +22,11 @@ export default class Satellite extends Mesh {
 	private sharedGeometry = new SphereGeometry(0.004);
 	private lastUpdateTime = 0;
 	private updateInterval = 1000;
+	private camera: Camera | null = null;
 
-	constructor() {
+	constructor(sceneCamera: PerspectiveCamera) {
 		super();
+		this.camera = sceneCamera;
 		this.fetchTles();
 		this.setEvents();
 		this.rotation.x = Math.PI / 2;
@@ -33,25 +37,27 @@ export default class Satellite extends Mesh {
 		document.addEventListener("mouseout", this.onMouseOut.bind(this), false);
 	}
 
-	onMouseMove(event) {
+	onMouseMove(event: MouseEvent) {
 		const mouse = new Vector2();
 		mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 		mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-		this.raycaster.setFromCamera(mouse, this.parent?.children[3]);
+		if (this.camera) this.raycaster.setFromCamera(mouse, this.camera);
 
 		const intersects = this.raycaster.intersectObjects(this.meshes);
 
 		if (intersects.length > 0) {
-			const index = this.meshes.indexOf(intersects[0].object);
-			if (this.tooltip) {
-				this.tooltip.style.display = "block";
-				this.tooltip.style.left = `${event.clientX}px`;
-				this.tooltip.style.top = `${event.clientY}px`;
-				this.tooltip.innerHTML = this.tles[index].name;
+			if (intersects[0].object instanceof Mesh) {
+				const index = this.meshes.indexOf(intersects[0].object);
+				if (this.tooltip) {
+					this.tooltip.style.display = "block";
+					this.tooltip.style.left = `${event.clientX}px`;
+					this.tooltip.style.top = `${event.clientY}px`;
+					this.tooltip.innerHTML = this.tles[index].name;
+				}
+			} else {
+				if (this.tooltip) this.tooltip.style.display = "none";
 			}
-		} else {
-			if (this.tooltip) this.tooltip.style.display = "none";
 		}
 	}
 
