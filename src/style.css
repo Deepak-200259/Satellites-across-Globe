@@ -1,0 +1,16 @@
+* {
+  font-size: 28px;
+  font-family: monospace;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.fetching-indicator {
+  height: 100vh;
+  width: 100vw;
+  position: sticky;
+  text-align: center;
+}

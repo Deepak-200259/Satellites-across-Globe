@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link
+			rel="icon"
+			href="data:," />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0" />
+		<title>SATMAP</title>
+	</head>
+	<body>
+		<div class="fetching-indicator">
+			<h1>Fetching TLEs...</h1>
+		</div>
+		<div
+			id="tooltip"
+			style="
+				position: absolute;
+				display: none;
+				background-color: rgba(0, 0, 0, 0.8);
+				color: #fff;
+				padding: 8px;
+				border-radius: 4px;
+			"></div>
+
+		<script
+			type="module"
+			src="/src/main.ts"></script>
+	</body>
+</html>
